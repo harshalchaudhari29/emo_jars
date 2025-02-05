@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Date Ideas</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #serialContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #serialContainer input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #serialContainer button {
+            padding: 10px 20px;
+            background-color: #ff4e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .card {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 450px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .buttons button {
+            padding: 12px;
+            border: none;
+            background-color: #ff4e50;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            flex: 1;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .buttons button:hover {
+            background-color: #c31432;
+        }
+        .steps-container {
+            display: none;
+            width: 300px;
+            background: #ffe5e5;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .typewriter {
+            white-space: pre-line;
+            overflow: hidden;
+            border-right: 2px solid black;
+            display: inline-block;
+            animation: blinkCursor 0.8s infinite;
+        }
+        @keyframes blinkCursor {
+            50% { border-color: transparent; }
+        }
+        #enterAnother {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #ff4e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #enterAnother:hover {
+            background-color: #c31432;
+        }
+		.branding {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="serialContainer">
+            <input type="text" id="serialNumber" placeholder="Enter 6-digit voucher code" maxlength="6">
+            <button onclick="validateSerial()">Submit</button>
+        </div>
+        <div class="card" id="dateCard" style="display: none;">
+            <img id="ideaImage" src="" alt="Date Idea">
+            <h2 id="ideaText"></h2>
+            <div class="buttons">
+                <button onclick="getRandomIdea()">💖 Check Another Idea</button>
+                <button onclick="showSteps()">📖 How to Plan This Date</button>
+            </div>
+        </div>
+        <div id="stepsContainer" class="steps-container"></div>
+        <button id="enterAnother" onclick="enterAnotherSerial()">🔄 Enter Another Serial Number</button>
+    </div>
+	<div class="branding">
+    <p>© 2025 emo_jars. All rights reserved.</p>
+</div>
+
+    <script>
+        const dateIdeas = [
+            { 
+                idea: "Stargazing at a quiet park", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Stargazing", 
+                steps: "1. Choose a park with a clear view of the night sky, especially one without city lights.\n2. Pack a blanket, cozy pillows, and some warm tea.\n3. If your partner loves astronomy, download a stargazing app and identify constellations.\n4. Enjoy the peaceful moments under the stars, perhaps with some quiet music or light conversation." 
+            },
+            { 
+                idea: "Cooking a new recipe together", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Cooking", 
+                steps: "1. Select a recipe based on both of your favorite cuisines—Italian pasta if you love Italian food or sushi if you're both fans of Asian cuisine.\n2. Pick fresh ingredients together, paying attention to your partner’s food preferences and dislikes.\n3. Set the ambiance by playing your favorite playlist as you cook.\n4. Afterward, enjoy the meal while discussing future adventures you both want to try."
+            },
+            { 
+                idea: "Picnic in the park", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Picnic", 
+                steps: "1. Choose a park that both of you will enjoy, ideally with scenic views or quiet spots for sitting.\n2. Pack your partner’s favorite snacks, and don't forget any dietary preferences like vegan or gluten-free.\n3. Bring a portable speaker for some background music if you both enjoy it.\n4. Engage in a fun activity like frisbee or relaxing with a good book."
+            },
+            { 
+                idea: "A cozy movie night with homemade popcorn", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Movie+Night", 
+                steps: "1. Choose a few movies that match your partner’s favorite genres—romantic comedies for light fun or a thriller if you’re both into suspense.\n2. Make your own popcorn with unique flavors like caramel or spicy seasoning.\n3. Create a comfy viewing area with pillows and blankets.\n4. After the movie, discuss your favorite scenes over a hot drink or dessert."
+            },
+            { 
+                idea: "Visit a local museum or art gallery", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Museum", 
+                steps: "1. If your partner enjoys history or art, choose a museum or gallery that features exhibits they are interested in.\n2. Wander through exhibits that highlight your favorite artists or time periods.\n3. Take notes or pictures of the artwork and talk about your interpretations or memories it brings.\n4. Finish the day with coffee at a nearby café and share thoughts on what you saw."
+            },
+            { 
+                idea: "Kayaking or canoeing on a serene lake", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Kayaking", 
+                steps: "1. Choose a calm and scenic lake where the water is peaceful, allowing for a relaxing paddle.\n2. If your partner loves the outdoors, bring along snacks and drinks for a lakeside picnic afterward.\n3. Make it more fun by racing each other or discovering hidden spots on the lake.\n4. Finish with a sunset viewing or a quiet moment reflecting on the day."
+            },
+            { 
+                idea: "Indoor plant shopping and home gardening", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Plant+Shopping", 
+                steps: "1. Visit a local nursery or garden center and find plants that appeal to both of you.\n2. If your partner is into plants, explore more unusual species or decorative pots.\n3. Plan a cozy afternoon repotting and arranging the plants together.\n4. End with tea or a nice meal, surrounded by your new green additions."
+            },
+            { 
+                idea: "DIY pottery or painting class", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Pottery", 
+                steps: "1. Sign up for a pottery or painting class at a local art studio.\n2. If your partner loves art, let them guide the session, or find inspiration from something they enjoy.\n3. Make it a friendly competition to create the best piece or collaborate on a larger project.\n4. At the end of the class, admire your creations and plan how to display them in your space."
+            },
+            { 
+                idea: "Nature walk followed by a sunset", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Nature+Walk", 
+                steps: "1. Choose a scenic trail that fits both of your activity levels.\n2. Make sure to bring a camera for photos, especially if your partner enjoys nature photography.\n3. Take breaks along the way to enjoy the views and have deep, meaningful conversations.\n4. Conclude with a beautiful sunset and some quiet moments together."
+            },
+            { 
+                idea: "Attend a live music concert or theater show", 
+                image: "https://via.placeholder.com/450x250/ff9a9e/fff?text=Live+Music", 
+                steps: "1. Find a live music concert or theater show that both of you enjoy—jazz for a chill vibe or a musical for a grand experience.\n2. If your partner enjoys live performances, try to get closer to the stage for a more immersive experience.\n3. After the show, discuss the performance and share thoughts about your favorite parts.\n4. End with a quiet walk or drink at a nearby café."
+            }
+        ];
+
+        let dateCardVisible = false; // To track if the date idea card is visible
+
+        function validateSerial() {
+            const serial = document.getElementById("serialNumber").value;
+            // Updated regex for [0-9][0-9][0-9][0-9][0-9][0-9] format
+            if (/^\d{3}\d{3}$/.test(serial)) {
+                document.getElementById("serialContainer").style.display = "none"; // Hide serial input and submit
+                document.getElementById("dateCard").style.display = "block"; // Show date idea card
+                dateCardVisible = true; // Track that the date card is visible
+                getRandomIdea(); // Show the first random idea
+            } else {
+                alert("Please enter a valid 6 digit voucher code.");
+            }
+        }
+
+        function getRandomIdea() {
+            const randomIdea = dateIdeas[Math.floor(Math.random() * dateIdeas.length)];
+            document.getElementById("ideaText").textContent = randomIdea.idea;
+            document.getElementById("ideaImage").src = randomIdea.image;
+            document.getElementById("stepsContainer").style.display = "none";
+            document.getElementById("stepsContainer").textContent = "";
+        }
+
+        function showSteps() {
+            const ideaText = document.getElementById("ideaText").textContent;
+            const idea = dateIdeas.find(item => item.idea === ideaText);
+            if (idea) {
+                document.getElementById("stepsContainer").style.display = "block";
+                typeWriter(idea.steps);
+            }
+        }
+
+        function typeWriter(text, i = 0) {
+            const stepsContainer = document.getElementById("stepsContainer");
+            stepsContainer.innerHTML = '<span class="typewriter"></span>';
+            const typewriterElement = stepsContainer.querySelector('.typewriter');
+
+            function type() {
+                if (i < text.length) {
+                    typewriterElement.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        function enterAnotherSerial() {
+            document.getElementById("serialContainer").style.display = "flex"; // Show serial input and submit
+            document.getElementById("dateCard").style.display = "none"; // Hide date idea card
+            document.getElementById("stepsContainer").style.display = "none"; // Hide steps
+            document.getElementById("serialNumber").value = ""; // Clear the input field
+        }
+    </script>
+</body>
+</html>
